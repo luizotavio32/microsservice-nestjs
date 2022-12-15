@@ -1,11 +1,19 @@
 import { Notification } from '@application/entities/notification';
 import { NotificationsRepository } from '@application/repositories/notification-repository';
+import { idText } from 'typescript';
 
 export class InMemoryNotificationsRepository
   implements NotificationsRepository
 {
   async findById(notificationId: string): Promise<Notification> {
-    throw new Error('Method not implemented.');
+    const notification = this.notifications.find(
+      (item) => item.id === notificationId,
+    );
+    if (!notification) {
+      return null;
+    }
+
+    return notification;
   }
 
   public notifications: Notification[] = [];
@@ -15,6 +23,12 @@ export class InMemoryNotificationsRepository
   }
 
   async save(notification: Notification): Promise<void> {
-    throw new Error('Method not implemented.');
+    const notificationIndex = this.notifications.findIndex(
+      (item) => item.id === notification.id,
+    );
+
+    if (notificationIndex >= 0) {
+      this.notifications[notificationIndex] = notification;
+    }
   }
 }
