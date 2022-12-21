@@ -1,9 +1,12 @@
+import { SendNotification } from '@application/use-cases/send-notification';
+import { DatabaseModule } from '@infra/database/database.module';
 import { Module } from '@nestjs/common';
+import { NotificationController } from './kafka/controllers/notifications.controllers';
 import { KafkaConsumerService } from './kafka/kafka-consumer.service';
 
 @Module({
-  imports: [],
-  providers: [KafkaConsumerService],
-  controllers: [],
+  imports: [DatabaseModule],
+  providers: [KafkaConsumerService, SendNotification],
+  controllers: [NotificationController],
 })
 export class MessagingModule {}
